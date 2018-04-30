@@ -22,7 +22,7 @@ namespace Multas_tA.Controllers {
          // constroi uma lista com os dados de todos os Agentes
          // e envia-a para a View
 
-         var listaAgentes = db.Agentes.ToList().OrderBy(a => a.Nome);
+         var listaAgentes = db.Agentes.OrderBy(a => a.Nome).ToList();
 
          return View(listaAgentes);
       }
@@ -168,10 +168,18 @@ namespace Multas_tA.Controllers {
       // POST: Agentes/Edit/5
       // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
       // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+     /// <summary>
+     /// Editar os dados de um Agente
+     /// </summary>
+     /// <param name="agente"> dados (nome + esquadra) do Agente a editar</param>
+     /// <returns></returns>
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agente) {
-         // falta tratar das imagens, como feito no CREATE
+         /// a primeira ação a executar neste método é ajustar o nome da variável de entrada.
+         /// 'agentes' é um nome criado automaticamente e reflete o nome da classe,
+         /// mas como está no plural não é adequado, pois os dados referem-se a apenas um Agente
+
 
          if(ModelState.IsValid) {
             // atualiza os dados do Agente, na estrutura de dados em memória
