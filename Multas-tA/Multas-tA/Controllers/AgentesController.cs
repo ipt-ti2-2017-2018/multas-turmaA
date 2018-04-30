@@ -195,11 +195,26 @@ namespace Multas_tA.Controllers {
 
 
          if(ModelState.IsValid) {
-            // atualiza os dados do Agente, na estrutura de dados em memória
-            db.Entry(agente).State = EntityState.Modified;
-            // Commit
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try{
+               // atualiza os dados do Agente, na estrutura de dados em memória
+               db.Entry(agente).State = EntityState.Modified;
+               // Commit
+               db.SaveChanges();
+
+               /// só no caso de submissão de uma nova fotografia
+               /// é que há necessidade de se gravar essa imagem.
+               /// Nesta primeira versão vamos simplesmente substituir a imagem anterior pela nova
+               /// mantendo o mesmo nome.
+               if(uploadFoto != null)
+                  uploadFoto.SaveAs(Path.Combine(Server.MapPath("~/imagens/"), agente.Fotografia));
+
+
+               return RedirectToAction("Index");
+            }
+            catch(Exception) {
+
+               throw;
+            }
          }
          return View(agente);
       }
