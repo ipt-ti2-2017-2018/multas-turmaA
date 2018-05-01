@@ -141,7 +141,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiViewModels\CreateAgenteViewModel.cs" />
+    <Compile Include="ApiViewModels\PostAgenteViewModel.cs" />
     <Compile Include="Api\AgentesController.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -161,6 +161,7 @@
     <Compile Include="Models\MultasDb.cs" />
     <Compile Include="Models\Viaturas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CreateAgenteViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

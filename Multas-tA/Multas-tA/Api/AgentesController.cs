@@ -87,7 +87,7 @@ namespace Multas_tA.Api
         // Ver classe 'ApiViewModels/CreateAgenteViewModel' para mais detalhes.
         // POST: api/Agentes
         [ResponseType(typeof(Agentes))]
-        public IHttpActionResult PostAgentes(CreateAgenteViewModel model)
+        public IHttpActionResult PostAgentes(PostAgenteViewModel model)
         {
             if (!ModelState.IsValid)
             {

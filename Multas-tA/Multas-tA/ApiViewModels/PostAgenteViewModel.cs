@@ -30,7 +30,7 @@ namespace Multas_tA.ApiViewModels
     /// 
     /// Ver http://www.abhijainsblog.com/2015/04/over-posting-attack-in-mvc.html
     /// </summary>
-    public class CreateAgenteViewModel : IValidatableObject
+    public class PostAgenteViewModel : IValidatableObject
     {
         [Required]
         [RegularExpression("[A-ZÂÍ][a-záéíóúãõàèìòùâêîôûäëïöüç.]+(( | de | da | dos | d'|-)[A-ZÂÍ][a-záéíóúãõàèìòùâêîôûäëïöüç.]+){1,3}",
