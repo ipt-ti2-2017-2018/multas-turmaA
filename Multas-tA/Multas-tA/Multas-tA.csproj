@@ -163,7 +163,7 @@
     <Compile Include="Models\Viaturas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CreateAgenteViewModel.cs" />
-    <Compile Include="ViewModels\ViaturaFormModel.cs" />
+    <Compile Include="ViewModels\MultaFormModel.cs" />
     <Compile Include="ViewModels\EditAgenteViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +184,7 @@
     <Content Include="Views\Multas\Details.cshtml" />
     <Content Include="Views\Multas\Edit.cshtml" />
     <Content Include="Views\Multas\Index.cshtml" />
+    <Content Include="Views\Multas\_Form.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
