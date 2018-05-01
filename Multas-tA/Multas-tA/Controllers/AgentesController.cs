@@ -141,13 +141,23 @@ namespace Multas_tA.Controllers
                 // return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 return RedirectToAction("Index");
             }
+
             Agentes agentes = db.Agentes.Find(id);
             if (agentes == null)
             {
                 //return HttpNotFound();
                 return RedirectToAction("Index");
             }
-            return View(agentes);
+
+            var model = new EditAgenteViewModel
+            {
+                ID = agentes.ID,
+                Nome = agentes.Nome,
+                Esquadra = agentes.Esquadra,
+                FotografiaAtual = agentes.Fotografia
+            };
+
+            return View(model);
         }
 
 
@@ -164,11 +174,22 @@ namespace Multas_tA.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agente, HttpPostedFileBase uploadFoto)
+        public ActionResult Edit(EditAgenteViewModel model)
         {
-            /// a primeira ação a executar neste método é ajustar o nome da variável de entrada.
-            /// 'agentes' é um nome criado automaticamente e reflete o nome da classe,
-            /// mas como está no plural não é adequado, pois os dados referem-se a apenas um Agente
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Obter o agente a editar, e produzir um erro se não existir.
+            var agente = db.Agentes.Find(model.ID);
+
+            if (agente == null)
+            {
+                ModelState.AddModelError("", "O agente não existe.");
+
+                return View(model);
+            }
 
             /// como se pretende editar os dados de um Agente,
             /// tem de haver a hipótese de se editar a fotografia dele.
@@ -197,7 +218,7 @@ namespace Multas_tA.Controllers
                 try
                 {              /// se foi fornecida uma nova imagem,
                                /// preparam-se os dados para efetuar a alteração
-                    if (uploadFoto != null)
+                    if (model.Fotografia != null)
                     {
                         /// antes de se fazer alguma coisa, preserva-se o nome antigo da imagem,
                         /// para depois a remover do disco rígido do servidor
@@ -205,12 +226,16 @@ namespace Multas_tA.Controllers
                         /// para o novo nome do ficheiro, vamos adicionar o termo gerado pelo timestamp
                         /// devidamente formatado, mais
                         /// A extensão do ficheiro é obtida automaticamente em vez de ser escrita de forma explícita
-                        novoNome = "Agente_" + agente.ID + DateTime.Now.ToString("_yyyyMMdd_hhmmss") + Path.GetExtension(uploadFoto.FileName).ToLower(); ;
+                        novoNome = "Agente_" + agente.ID + DateTime.Now.ToString("_yyyyMMdd_hhmmss") + Path.GetExtension(model.Fotografia.FileName).ToLower(); ;
                         /// atualizar os dados do Agente com o novo nome
                         agente.Fotografia = novoNome;
                         /// guardar a nova imagem no disco rígido
-                        uploadFoto.SaveAs(Path.Combine(Server.MapPath("~/imagens/"), novoNome));
+                        model.Fotografia.SaveAs(Path.Combine(Server.MapPath("~/imagens/"), novoNome));
                     }
+
+                    // Passar os dados do modelo para o agente
+                    agente.Nome = model.Nome;
+                    agente.Esquadra = model.Esquadra;
 
                     // guardar os dados do Agente
                     db.Entry(agente).State = EntityState.Modified;
@@ -219,9 +244,10 @@ namespace Multas_tA.Controllers
 
                     /// caso tenha sido fornecida uma nova imagem há necessidade de remover 
                     /// a antiga
-                    if (uploadFoto != null)
+                    if (model.Fotografia != null)
+                    {
                         System.IO.File.Delete(Path.Combine(Server.MapPath("~/imagens/"), nomeAntigo));
-
+                    }
 
                     // enviar os dados para a página inicial
                     return RedirectToAction("Index");
@@ -232,7 +258,11 @@ namespace Multas_tA.Controllers
                     ModelState.AddModelError("", string.Format("Ocorreu um erro com a edição dos dados do agente {0}", agente.Nome));
                 }
             }
-            return View(agente);
+
+            // Preencher novamente os campos que se possam ter perdido...
+            model.FotografiaAtual = agente.Fotografia;
+
+            return View(model);
         }
 
 

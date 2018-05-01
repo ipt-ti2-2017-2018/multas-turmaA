@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace Multas_tA.ViewModels
+{
+    /// <summary>
+    /// Variação do <see cref="CreateAgenteViewModel"/> que não tem
+    /// a fotografia como obrigatória.
+    /// 
+    /// É um bocado duplicar código, mas técnicas como herança poderiam ajudar
+    /// (mas pouco).
+    /// </summary>
+    public class EditAgenteViewModel : IValidatableObject
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Required]
+        [RegularExpression("[A-ZÂÍ][a-záéíóúãõàèìòùâêîôûäëïöüç.]+(( | de | da | dos | d'|-)[A-ZÂÍ][a-záéíóúãõàèìòùâêîôûäëïöüç.]+){1,3}",
+            ErrorMessage = "O nome apenas aceita letras. Cada palavra começa por uma maiúscula, seguida de minúsculas...")]
+        [StringLength(40)]
+        public string Nome { get; set; }
+
+        [Required]
+        public string Esquadra { get; set; }
+
+        public HttpPostedFileBase Fotografia { get; set; }
+
+        /// <summary>
+        /// Campo auxiliar para a view que indica a foto atual.
+        /// </summary>
+        public string FotografiaAtual { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            // Cuidado: Se o [Required] não está presente,
+            // a Fotografia pode ser null...
+            if (
+                Fotografia != null &&
+                Fotografia.ContentLength > 0 &&
+                Fotografia.ContentType.Split('/').First() != "image"
+            )
+            {
+                yield return new ValidationResult(
+                    "Só são aceites imagens.",
+                    new[] { nameof(Fotografia) }
+                );
+            }
+        }
+    }
+}
