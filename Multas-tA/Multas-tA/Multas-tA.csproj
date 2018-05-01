@@ -146,6 +146,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AgentesController.cs" />
+    <Compile Include="Controllers\MultasController.cs" />
     <Compile Include="Controllers\TestesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -177,6 +178,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Testes\Agentes.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\HttpPostedFileBase.cshtml" />
+    <Content Include="Views\Multas\Create.cshtml" />
+    <Content Include="Views\Multas\Delete.cshtml" />
+    <Content Include="Views\Multas\Details.cshtml" />
+    <Content Include="Views\Multas\Edit.cshtml" />
+    <Content Include="Views\Multas\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

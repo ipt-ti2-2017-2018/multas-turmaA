@@ -18,7 +18,10 @@ namespace Multas_tA.Migrations
             // por outra aplicação.
             using (var db = new MultasDb())
             {
-                maxIdAgente = db.Agentes.Max(x => x.ID) + 1;
+                if (db.Agentes.Any())
+                {
+                    maxIdAgente = db.Agentes.Max(x => x.ID) + 1;
+                }
             }
 
             // Sequências são uma forma atómica de obter números a partir de uma BD.
