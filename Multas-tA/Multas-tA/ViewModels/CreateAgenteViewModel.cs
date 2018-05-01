@@ -41,8 +41,14 @@ namespace Multas_tA.ViewModels
         [Required]
         public string Esquadra { get; set; }
 
+        /// <summary>
+        /// Campos que são HttpPostedFileBase também podem ser colocados em View Models,
+        /// e também podem ser validados.
+        /// 
+        /// Nota: O editor default não funciona... temos que criar um custom.
+        /// Ver: Views/Shared/EditorTemplates/HttpPostedFileBase.cshtml
+        /// </summary>
         [Required]
-        [DataType(DataType.Upload)]
         public HttpPostedFileBase Fotografia { get; set; }
 
         /// <summary>

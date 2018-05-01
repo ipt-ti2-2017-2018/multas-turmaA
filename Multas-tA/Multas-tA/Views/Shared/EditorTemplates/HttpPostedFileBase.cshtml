@@ -1,0 +1,20 @@
+﻿@model HttpPostedFileBase
+
+@*
+    O 2º parâmetro do EditorFor pode ser um objeto
+    que é usado para passar dados para o template (fica disponível no ViewData)
+
+    Por convenção, no MVC, é usado o nome "htmlAttributes":
+    @Html.EditorFor(model => model.Fotografia, new { htmlAttributes = new { @class = "form-control-static", accept = "image/*" } })
+*@
+
+@{
+    // O "htmlAttributes" será convertido para um Dictionary, que pode ser usado para colocar atributos extra.
+    var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(ViewData["htmlAttributes"]);
+}
+
+<input type="file"
+       name="@Html.NameFor(model => model)"
+       class="@htmlAttributes["class"]"
+       id="@Html.IdFor(model => model)"
+       accept="@htmlAttributes["accept"]"/>

@@ -43,8 +43,22 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Fotografia, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Fotografia, new { htmlAttributes = new { @class = "form-control" } })
+                @*
+                    Quando se usa o @Html.EditorFor, ele vai procurar o template adequado a usar
+                    para o tipo do campo (string, DateTime, double, etc.).
 
+                    Quando ele não encontra, o que o HtmlHelper do MVC faz é iterar pelos campos da classe
+                    e gerar textboxes para cada um dos campos.
+
+                    No entanto, se existir um ficheiro cshtml com o nome da classe do campo (neste caso, a Fotografia
+                    é um HttpPostedFileBase) na pasta Views/Shared/EditorTemplates, o HtmlHelper vai usar esse
+                    ficheiro como template.
+
+                    Ver o ficheiro Views/Shared/EditorTemplates/HttpPostedFileBase.cshtml para mais detalhes.
+
+                    Experimentem remover (ou renomear) o ficheiro, e ver o que acontece...
+                *@
+                @Html.EditorFor(model => model.Fotografia, new { htmlAttributes = new { @class = "form-control-static", accept = "image/*" } })
                 @Html.ValidationMessageFor(model => model.Fotografia, "", new { @class = "text-danger" })
             </div>
         </div>
