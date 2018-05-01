@@ -11,10 +11,9 @@
 @{
     // O "htmlAttributes" será convertido para um Dictionary, que pode ser usado para colocar atributos extra.
     var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(ViewData["htmlAttributes"]);
+
+    // O "type" não vem definido corretamente, logo definimo-lo aqui...
+    htmlAttributes["type"] = "file";
 }
 
-<input type="file"
-       name="@Html.NameFor(model => model)"
-       class="@htmlAttributes["class"]"
-       id="@Html.IdFor(model => model)"
-       accept="@htmlAttributes["accept"]"/>
+@Html.TextBoxFor(model => model, htmlAttributes)
