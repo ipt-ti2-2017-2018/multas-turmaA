@@ -42,19 +42,19 @@ namespace Multas_tA.ViewModels
         [Required, DataType(DataType.Date)]
         public DateTime? DataDaMulta { get; set; }
 
-        public int? IdAgente { get; set; }
+        public int? AgenteFK { get; set; }
 
-        public int? IdViatura { get; set; }
+        public int? ViaturaFK { get; set; }
 
-        public int? IdCondutor { get; set; }
+        public int? CondutorFK { get; set; }
 
         #region Dados para dropdowns.
 
-        public SelectList AgentesSelectList { get; set; }
+        public IEnumerable<SelectListItem> AgentesSelectList { get; set; }
 
-        public SelectList ViaturasSelectList { get; set; }
+        public IEnumerable<SelectListItem> ViaturasSelectList { get; set; }
 
-        public SelectList CondutoresSelectList { get; set; }
+        public IEnumerable<SelectListItem> CondutoresSelectList { get; set; }
 
         #endregion
     }
