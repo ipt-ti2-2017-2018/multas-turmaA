@@ -41,31 +41,9 @@ namespace Multas_tA.Controllers
         public ActionResult Create()
         {
             // Criação de um View Model com dados para as dropdowns.
-            var model = new ViaturaFormModel
-            {
-                // Opção nº 1: Usar um SelectList.
-                // Nota: nameof(Agentes.ID) -> "ID"
-                //       nameof(Agentes.Nome) -> "Nome"
-                // (mais resistente também a refactorings).
-                AgentesSelectList = new SelectList(db.Agentes, nameof(Agentes.ID), nameof(Agentes.Nome)),
-                
-                // Opção nº 2: Linq. Mais flexível do que a opção nº 1, mas é mais código...
-                // eu prefiro esta opção, para ser sincero.
-                ViaturasSelectList = db.Viaturas
-                    .Select(viatura => new SelectListItem
-                    {
-                        Value = viatura.ID.ToString(), // SelectListItem só suporta string.
-                        Text = viatura.Marca + " " + viatura.Modelo + " de " + viatura.NomeDono + ", matrícula " + viatura.Matricula
-                    })
-                    .ToList(), // Convém fazer o ToList()
-                CondutoresSelectList = db.Condutores
-                    .Select(condutor => new SelectListItem
-                    {
-                        Value = condutor.ID.ToString(),
-                        Text = condutor.Nome + ", carta de condução " + condutor.NumCartaConducao
-                    })
-                    .ToList()
-            };
+            var model = new MultaFormModel();
+
+            PreencherDropDownsComDadosBd(model);
 
             return View(model);
         }
@@ -75,7 +53,7 @@ namespace Multas_tA.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ViaturaFormModel model)
+        public ActionResult Create(MultaFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +79,8 @@ namespace Multas_tA.Controllers
                 return RedirectToAction("Index");
             }
 
-            // TODO: Se obtermos um erro, teremos que reinicializar as nossas dropdowns.
+            // Se obtermos um erro, teremos que reinicializar as nossas dropdowns.
+            PreencherDropDownsComDadosBd(model);
 
             return View(model);
         }
@@ -118,29 +97,36 @@ namespace Multas_tA.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AgenteFK = new SelectList(db.Agentes, "ID", "Nome", multas.AgenteFK);
-            ViewBag.CondutorFK = new SelectList(db.Condutores, "ID", "Nome", multas.CondutorFK);
-            ViewBag.ViaturaFK = new SelectList(db.Viaturas, "ID", "Matricula", multas.ViaturaFK);
+
+            // Fiz um construtor que recebe uma multa, para "limpar"
+            // o código do controller um bocadinho...
+            var model = new MultaFormModel(multas);
+
+            PreencherDropDownsComDadosBd(model);
+
             return View(multas);
         }
 
         // POST: Multas/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Infracao,LocalDaMulta,ValorMulta,DataDaMulta,AgenteFK,CondutorFK,ViaturaFK")] Multas multas)
+        public ActionResult Edit(MultaFormModel model)
         {
             if (ModelState.IsValid)
             {
+                var multas = db.Multas.Find(model.ID);
+
+                // TODO: Preencher campos da multa...
+                //       Ver como se faz no controller dos Agentes, método Edit.
+
                 db.Entry(multas).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AgenteFK = new SelectList(db.Agentes, "ID", "Nome", multas.AgenteFK);
-            ViewBag.CondutorFK = new SelectList(db.Condutores, "ID", "Nome", multas.CondutorFK);
-            ViewBag.ViaturaFK = new SelectList(db.Viaturas, "ID", "Matricula", multas.ViaturaFK);
-            return View(multas);
+
+            PreencherDropDownsComDadosBd(model);
+
+            return View(model);
         }
 
         // GET: Multas/Delete/5
@@ -176,6 +162,38 @@ namespace Multas_tA.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        // Preenche as dropdowns do view model com dados da bd.
+        private void PreencherDropDownsComDadosBd(MultaFormModel model)
+        {
+            // Opção nº 1: Usar um SelectList.
+            // Nota: nameof(Agentes.ID) -> "ID"
+            //       nameof(Agentes.Nome) -> "Nome"
+            // (mais resistente também a refactorings).
+            model.AgentesSelectList = new SelectList(db.Agentes, nameof(Agentes.ID), nameof(Agentes.Nome), model.AgenteFK);
+                
+            // Opção nº 2: Linq. Mais flexível do que a opção nº 1, mas é mais código...
+            // eu prefiro esta opção, para ser sincero.
+            model.ViaturasSelectList = db.Viaturas
+                .Select(viatura => new SelectListItem
+                {
+                    Value = viatura.ID.ToString(), // SelectListItem só suporta string.
+                    Text = viatura.Marca + " " + viatura.Modelo + " de " + viatura.NomeDono + ", matrícula " + viatura.Matricula,
+                    // Selected serve para fazer com que a opção seja seleccionada by default.
+                    // seleccionaremos se a viatura da BD for a viatura do modelo.
+                    Selected = model.ViaturaFK == viatura.ID
+                })
+                .ToList(); // Convém fazer o ToList()
+
+            model.CondutoresSelectList = db.Condutores
+                .Select(condutor => new SelectListItem
+                {
+                    Value = condutor.ID.ToString(),
+                    Text = condutor.Nome + ", carta de condução " + condutor.NumCartaConducao,
+                    Selected = model.CondutorFK == condutor.ID
+                })
+                .ToList();
         }
     }
 }

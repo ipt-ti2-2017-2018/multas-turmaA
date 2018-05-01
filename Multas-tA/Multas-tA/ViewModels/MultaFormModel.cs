@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Multas_tA.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,8 +13,29 @@ namespace Multas_tA.ViewModels
     /// em que colocamos dados para dropdowns no modelo
     /// em vez de usarmos a ViewBag.
     /// </summary>
-    public class ViaturaFormModel
+    public class MultaFormModel
     {
+        public MultaFormModel()
+        {
+
+        }
+
+        public MultaFormModel(Multas multas)
+        {
+            this.ID = multas.ID;
+
+            this.AgenteFK = multas.AgenteFK;
+            this.CondutorFK = multas.CondutorFK;
+            this.ViaturaFK = multas.ViaturaFK;
+
+            this.DataDaMulta = multas.DataDaMulta;
+            this.Infracao = multas.Infracao;
+            this.LocalDaMulta = multas.LocalDaMulta;
+            this.ValorMulta = multas.ValorMulta;
+        }
+        
+        public int? ID { get; set; }
+
         public string Infracao { get; set; }
 
         public string LocalDaMulta { get; set; }
