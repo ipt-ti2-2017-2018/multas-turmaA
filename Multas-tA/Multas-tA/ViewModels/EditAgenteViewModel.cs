@@ -8,7 +8,8 @@ namespace Multas_tA.ViewModels
 {
     /// <summary>
     /// Variação do <see cref="CreateAgenteViewModel"/> que não tem
-    /// a fotografia como obrigatória.
+    /// a fotografia como obrigatória, e por questões de exemplificação de um
+    /// ataque de Overposting, também remove a possibilidade de editar o Nome.
     /// 
     /// É um bocado duplicar código, mas técnicas como herança poderiam ajudar
     /// (mas pouco).
@@ -17,13 +18,7 @@ namespace Multas_tA.ViewModels
     {
         [Required]
         public int ID { get; set; }
-
-        [Required]
-        [RegularExpression("[A-ZÂÍ][a-záéíóúãõàèìòùâêîôûäëïöüç.]+(( | de | da | dos | d'|-)[A-ZÂÍ][a-záéíóúãõàèìòùâêîôûäëïöüç.]+){1,3}",
-            ErrorMessage = "O nome apenas aceita letras. Cada palavra começa por uma maiúscula, seguida de minúsculas...")]
-        [StringLength(40)]
-        public string Nome { get; set; }
-
+        
         [Required]
         public string Esquadra { get; set; }
 

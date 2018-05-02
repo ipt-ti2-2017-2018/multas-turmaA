@@ -152,7 +152,6 @@ namespace Multas_tA.Controllers
             var model = new EditAgenteViewModel
             {
                 ID = agentes.ID,
-                Nome = agentes.Nome,
                 Esquadra = agentes.Esquadra,
                 FotografiaAtual = agentes.Fotografia
             };
@@ -234,7 +233,6 @@ namespace Multas_tA.Controllers
                     }
 
                     // Passar os dados do modelo para o agente
-                    agente.Nome = model.Nome;
                     agente.Esquadra = model.Esquadra;
 
                     // guardar os dados do Agente
