@@ -70,15 +70,21 @@ namespace Multas_tA.Models {
       [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
       public string ConfirmPassword { get; set; }
 
-      [Required]
-      public string NomeProprio { get; set; }
+      //**********************************************************
+      // atributo específicos do utilizador
 
-      [Required]
-      public string Apelido { get; set; }
+      public Utilizador Utilizador { get; set; }
 
-      [Required]
-      [Display (Name ="Data de nascimento")]
-      public DateTime DataNascimento { get; set; }
+
+      //[Required]
+      //public string NomeProprio { get; set; }
+
+      //[Required]
+      //public string Apelido { get; set; }
+
+      //[Required]
+      //[Display(Name = "Data de nascimento")]
+      //public DateTime DataNascimento { get; set; }
 
 
    }

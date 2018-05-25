@@ -14,15 +14,6 @@ namespace Multas_tA.Models {
    /// </summary>
    public class ApplicationUser : IdentityUser {
 
-      // criar atributos que serao explicitos na minhga aplicacao
-      // eles vão ser criados na tabela AspNetUsers
-      public string NomeProprio { get; set; }
-
-      public string Apelido { get; set; }
-
-      public DateTime? DataNascimento { get; set; }
-
-
       public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager) {
          // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
          var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -58,6 +49,11 @@ namespace Multas_tA.Models {
       public virtual DbSet<Condutores> Condutores { get; set; }
       public virtual DbSet<Viaturas> Viaturas { get; set; }
       public virtual DbSet<Agentes> Agentes { get; set; }
+
+      // tabela para registar os dados dos utilizadores
+      public virtual DbSet<Utilizador> Utilizadores { get; set; }
+
+
 
       /// <summary>
       /// configura a forma como as tabelas são criadas
