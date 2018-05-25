@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Multas_tA.Models;
 
 namespace Multas_tA.Controllers {
@@ -17,6 +18,11 @@ namespace Multas_tA.Controllers {
 
       // GET: Agentes
       public ActionResult Index() {
+
+
+         var nome = User.Identity.Name;
+         ApplicationUser utilizadorAutenticado = db.Users.Find(User.Identity.GetUserId());
+
 
          // (LINQ)db.Agente.ToList() --> em SQL: SELECT * FROM Agentes ORDER BY 
          // constroi uma lista com os dados de todos os Agentes
@@ -233,7 +239,7 @@ namespace Multas_tA.Controllers {
             // gerar uma mensagem de erro, a ser apresentada ao utilizador
             ModelState.AddModelError("",
                        string.Format("Não foi possível remover o Agente '{0}', porque existem {1} multas associadas a ele.",
-                                      agente.Nome , agente.ListaDeMultas.Count));
+                                      agente.Nome, agente.ListaDeMultas.Count));
          }
 
          // reenviar os dados para a View
